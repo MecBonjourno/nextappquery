@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import fire from '../../config/fire-config';
 import { useRouter } from 'next/router'
+import 'fb-sdk'
 
 // const Login = () => {
 //   const [username, setUsername] = useState('');
@@ -74,13 +75,39 @@ const Page: React.FC = () => {
 
     setUsername('')
     setPassword('')
-    router.push(`/profile/${user.uid}`)
+
+    
   }
+  if(!user){}else{
+    router.push(`/profile/${user.uid}`)}
 
   async function getCustomClaimRole() {
     await fire.auth().currentUser.getIdToken(true);
     const decodedToken = await fire.auth().currentUser.getIdTokenResult();
     return decodedToken.claims.stripeRole;
+  }
+
+  const LoginFacebook = () => {
+    const provider = new fire.auth.FacebookAuthProvider();
+    fire.auth().signInWithPopup(provider).then(function(result) {
+      
+      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+      var token = result.credential.accessToken;
+      // The signed-in user info.
+      var user = result.user;
+      // ...
+      console.log("Parte 3")
+      console.log(token, user)
+    }).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      // ...
+    });
   }
 
 
@@ -116,8 +143,10 @@ const Page: React.FC = () => {
               <button type="submit">Login</button>
             </form>
 
+            <button type="submit" onClick={LoginFacebook}>Login Face</button>
+
             <div id="firebaseui-auth-container"></div>
-            <div id="loader">Loading...</div>
+           
           </CenterDiv>
             </ModelSection>
           ))}

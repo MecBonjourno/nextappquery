@@ -22,6 +22,7 @@ const Home = () => {
     })
 
 
+
   useEffect(() => {
     fire.firestore()
       .collection('users').limit(10)

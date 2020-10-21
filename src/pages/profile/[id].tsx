@@ -46,6 +46,7 @@ const Blog = (props) => {
             .getDownloadURL()
             .then(url => {
               setUrl(url);
+              console.log(url)
             });
         }
       );
@@ -101,11 +102,15 @@ export const getServerSideProps = async ({ query, evt }) => {
     .doc(query.id)
     .get()
     .then((result) => {
-      content['face'] = result.data().face;
+      try{
+    content['face'] = result.data().face;
       content['insta'] = result.data().insta;
       content['ocupacao'] = result.data().ocupacao; 
       content['twitter'] = result.data().twitter;
        content['url'] = result.data().url;
+      }catch(err){
+        console.log(err);
+      }
     });
 
   return {
