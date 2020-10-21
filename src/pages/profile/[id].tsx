@@ -27,7 +27,8 @@ const Blog = (props) => {
     };
   
     const handleUpload = () => {
-      const uploadTask = storage.ref(`images/${image.name}`).put(image);
+      const user = fire.auth().currentUser;
+      const uploadTask = storage.ref(`${user.uid}/images/${image.name}`).put(image);
       uploadTask.on(
         "state_changed",
         snapshot => {
@@ -41,7 +42,7 @@ const Blog = (props) => {
         },
         () => {
           storage
-            .ref("images")
+            .ref(`${user.uid}/images`)
             .child(image.name)
             .getDownloadURL()
             .then(url => {
