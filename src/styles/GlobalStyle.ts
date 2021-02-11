@@ -11,4 +11,8 @@ export default createGlobalStyle`
         color: #FFF;
         font-family: Arial, Helvetica, sans-serif;
     }
+
+    img {
+        max-width: 100%;
+    }
 `;
